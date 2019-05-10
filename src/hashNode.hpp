@@ -10,6 +10,9 @@
 #include <stdlib.h>
 using namespace std;
 
+#ifndef HASHNODE_HPP_
+#define HASHNODE_HPP_
+
 class hashNode {
 	friend class hashMap;
 	string keyword;   // this is used as the key – each key is only inserted once!
@@ -25,3 +28,4 @@ public:
 	string getRandValue();  // returns a random string from the values array.  If there’s no values in the value array, then it returns an empty string.
 };
 
+#endif /* hasNode_HPP_ */
