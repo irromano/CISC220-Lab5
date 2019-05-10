@@ -8,12 +8,17 @@
 
 #include "hashMap.hpp"
 
-hashMap::hashMap() {
-	// TODO Auto-generated constructor stub
+hashMap::hashMap(bool hash1, bool coll1) {
+	first = NULL;
+	numKeys = NULL;
+	mapSize = NULL;
+	h1 = hash1;
+	c1 = coll1;
 
 }
+
+hashMap::
 
 hashMap::~hashMap() {
 	// TODO Auto-generated destructor stub
 }
-

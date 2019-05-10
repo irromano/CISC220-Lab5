@@ -10,6 +10,9 @@
 #define HASHMAP_HPP_
 
 #include "hashNode.hpp"
+#include <iostream>
+#include <string>
+#include <stdlib.h>
 
 class hashMap {
 	friend class makeSeuss;
@@ -32,7 +35,8 @@ class hashMap {
 	int collisionct1; //count of original collisions (caused by the hashing function used)
 	int collisionct2; //count of secondary collisions (caused by the collision handling method used)
 public:
-	hashMap(bool hash1, bool coll1); // when creating the map, make sure you initialize the values to NULL so you know whether that index has a key in it or not already.  The Boolean values initialize the h1 and the c1 boolean values, making it easier to control which hash and which collision methods you use.
+	hashMap(bool hash1, bool coll1); // when creating the map, make sure you initialize the values to NULL so you know whether that index has a key in it or not already.
+	//The Boolean values initialize the h1 and the c1 boolean values, making it easier to control which hash and which collision methods you use.
 	void addKeyValue(string k, string v);
 	// adds a node  to the map at the correct index based on the key string, and then inserts the value into the value field of the hashNode
 	// Must check to see whether there's a node at that location.  If there's nothing there (it's NULL), add the hashNode with the keyword and value.

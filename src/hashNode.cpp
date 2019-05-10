@@ -7,8 +7,6 @@
 
 #include "hashNode.hpp"
 
-namespace hashNode {
-
 hashNode::hashNode() {
 	// TODO Auto-generated constructor stub
 
@@ -18,4 +16,12 @@ hashNode::~hashNode() {
 	// TODO Auto-generated destructor stub
 }
 
-} /* namespace hashNode */
+//creates a new array, double the length, and copies over the values. Sets the values array to be the newly allocated array.
+void hashNode :: dblArray() {
+	string dblArray = new string[2 * valuesSize];
+	for (int i = 0; i < valuesSize; i++) {
+		dblArray[i] = values[i];
+	}
+	valuesSize = 2 * valuesSize;
+}
+
