@@ -1,13 +1,14 @@
 //============================================================================
 // Ian Romano, Michael Richards
 // TA: Daniel Gaston
-// 2/22/19
+// 5/09/19
 //
 // hashNode.hpp
 //============================================================================
 #include <iostream>
 #include <string>
 #include <stdlib.h>
+#include <time.h>
 using namespace std;
 
 #ifndef HASHNODE_HPP_

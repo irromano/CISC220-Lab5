@@ -8,8 +8,12 @@
 
 #include <iostream>
 using namespace std;
+#include "hashMap.hpp"
 
 int main() {
-	cout << "!!!Hello World!!!" << endl;
+
+	hashMap *testMap = new hashMap(1, 1);
+	//int prime = testMap->getClosestPrime(2);
+	//cout << prime << endl;
 	return 0;
 }
