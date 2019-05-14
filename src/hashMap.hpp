@@ -56,6 +56,7 @@ public:
 	int collHash1(int h, int index, string key); // getting index with collision method 1 (note – you may modify the parameters if you don’t need some/need more)
 	int collHash2(int h, int index, string key); // getting index with collision method 2 (note – you may modify the parameters if you don’t need some/need more)
 	int findKey(string key); //finds the key in the array and returns its index.  If it's not in the array, returns -1
+	int findKeyColHelp1(int h, int index, string key);
 	void printMap();  //I wrote this solely to check if everything was working.
 };
 

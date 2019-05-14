@@ -12,11 +12,16 @@ using namespace std;
 
 int main() {
 
-	hashMap *testMap = new hashMap(1, 0);
+	hashMap *testMap = new hashMap(1, 1);
+	testMap->addKeyValue("dog", "runs");
+	testMap->addKeyValue("cat", "runs");
+	testMap->addKeyValue("cat", "licks");
+	testMap->addKeyValue("cad", "licks");
+	testMap->addKeyValue("car", "licks");
 	testMap->printMap();
-	int ind1 = testMap->calcHash("cad");
-	int ind2 = testMap->collHash2(0, 6, "don");
-	cout << ind1 << endl;
-	cout << ind2 << endl;
+	cout << endl;
+	testMap->addKeyValue("buggy", "off");
+	testMap->printMap();
+	//cout << ind2 << endl;
 	return 0;
 }

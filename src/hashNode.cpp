@@ -32,7 +32,7 @@ hashNode::hashNode(string keyword, string value) {
 	this->keyword = keyword;
 	valuesSize = 100;
 	values = new string[valuesSize];
-	value = values[0];
+	values[0] = value;
 	currSize = 1;
 }
 

@@ -13,14 +13,18 @@
 hashMap::hashMap(bool hash1, bool coll1) {
 
 	first = "";
-	numKeys = NULL;
+	numKeys = 0;
 	mapSize = 7;
-	*map = new hashNode[mapSize];
-	for (int i=0; i<13; i++) {
+	//map = NULL;
+	map = new hashNode*[mapSize];
+	for (int i=0; i<mapSize; i++) {
 		map[i] = NULL;
 	}
 	this->hash1 = hash1;
 	this->coll1 = coll1;
+
+	collisionct1 = 0;
+	collisionct2 = 0;
 
 }
 
@@ -31,17 +35,41 @@ hashMap::hashMap(bool hash1, bool coll1) {
  * If the node has a different keyword, keep calculating a new hash index until either the keyword matches the node at that index's keyword, or until the
  * map at that index is NULL, in which case you'll add the node there.
  * This method also checks for load, and if the load is over 70%, it calls the reHash method to create a new longer map array and rehash the values
- * if h1 is true, the first hash function is used, and if it’s false, the second is used.
- * if c1 is true, the first collision method is used, and if it’s false, the second is used
+ * hashing and collision logic (hash1 vs hash2 and coll1 vs coll2) are handled by the getIndex() method.
  */
-//void hashMap::addKeyValue(string key, string value);
+void hashMap::addKeyValue(string key, string value) {
+	int index = getIndex(key);
+	if (map[index] == NULL) {
+		map[index] = new hashNode(key, value);
+		numKeys++;
+		double load = (double(numKeys)) / mapSize;
+		if (load > 0.70) {
+			this->reHash();
+		}
+	} else {
+		map[index]->addValue(value);
+	}
+}
 
 // uses calcHash and reHash to calculate and return the index of where the keyword k should be inserted into the map array
 int hashMap::getIndex(string key) {
+	int index;
 	if (hash1) {
-		return calcHash(key);
+		index = calcHash(key);
 	} else {
-		return calcHash2(key);
+		index = calcHash2(key);
+	}
+	if (map[index] == NULL) {
+		return index;
+	} else if (map[index]->keyword == key) {
+		return index;
+	} else {
+		if (coll1) {
+			index = collHash1(1, index +1, key);
+		} else {
+			index = collHash2(1, index +1, key);
+		}
+		return index;
 	}
 }
 
@@ -110,44 +138,39 @@ int hashMap::getClosestPrime(int mapSize) {
 
 // when size of array is at 70%, double array size and rehash keys
 void hashMap::reHash() {
-	int newMapSize = getClosestPrime(mapSize * 2);
-	hashNode **newMap;
-	*newMap = new hashNode[newMapSize];
-	for (int i=0; i<newMapSize; i++) {
-		newMap[i] = NULL;
+	hashNode **oldMap = map;
+	int oldMapSize = mapSize;
+	mapSize = getClosestPrime(mapSize *2);
+	map = new hashNode *[mapSize];
+
+	for (int i=0; i<mapSize; i++) {
+		map[i] = NULL;
 	}
 
-	for (int i = 0; i < mapSize; i++) {
-		if (map[i] != NULL) {
-			string keyword = map[i]->keyword;
-			int hash;
-			if (hash1) {
-				hash = calcHash(keyword);
-			} else {
-				hash = calcHash2(keyword);
+	for (int i=0; i<oldMapSize; i++) {
+		if (oldMap[i] != NULL) {
+			int index = this->getIndex(oldMap[i]->keyword);
+			map[index] = oldMap[i];
 			}
-			newMap[hash] = map[i];
 		}
 	}
 
-
-}
 
 /*collHash1() (Linear Probing)
  * This collision handling method uses linear probing and recursion to return the next index.
  * Parameters:
  * 		int h: represents the amount of times collHash1 was called.
- *			If using this method manually, this should be set to 0;
+ *			If using this method manually, this should be set to 1;
  * 		int index: represents the current index being looked at. If being manually called by
  * 			the user, a value of the collision index plus 1 should be used.
  * 		string key: represents the keyword to be inserted.
  *
  */
 int hashMap::collHash1(int h, int index, string key) {
-	h++;
-	if (map[index] == NULL) {
+	if (map[index] == NULL || map[index]->keyword == key) {
 		return index;
 	} else {
+		h++;
 		collisionct2++;
 		if (index >= mapSize -1) {
 			index = -1;
@@ -167,10 +190,10 @@ int hashMap::collHash1(int h, int index, string key) {
  *
  */
 int hashMap::collHash2(int h, int index, string key) {
-	h++;
-	if (map[index] == NULL) {
+	if (map[index] == NULL || map[index]->keyword == key) {
 		return index;
 	} else {
+		h++;
 		collisionct2++;
 		index += h * h;
 		while (index >= mapSize) {
@@ -193,21 +216,31 @@ int hashMap::findKey(string key) {
 	} else if (map[index]->keyword == key) {
 		return index;
 	} else {
-
+		if (coll1) {
+			index = collHash1(1, index +1, key);
+		} else {
+			index = collHash2(1, index +1, key);
+		}
+		if (map[index]->keyword == key) {
+			return index;
+		} else {
+			return -1;
+		}
 	}
 }
+
 
 //I wrote this solely to check if everything was working.
 void hashMap::printMap() {
 	for (int i=0; i<mapSize; i++) {
 		if (map[i] != NULL) {
-			cout << map[i]->keyword << ": ";
+			cout << "[" << i << "]" << map[i]->keyword << ": ";
 			for (int j=0; j<map[i]->currSize; j++) {
 				cout << map[i]->values[j] << ", ";
 			}
 			cout << endl;
 		} else {
-			cout << "NULL" << endl;
+			cout << "[" << i << "]" << "NULL" << endl;
 		}
 	}
 	return;
