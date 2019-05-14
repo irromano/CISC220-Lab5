@@ -69,10 +69,12 @@ string hashNode::getRandValue() {
 
 //creates a new array, double the length, and copies over the values. Sets the values array to be the newly allocated array.
 void hashNode::dblArray() {
-	string *dblArray = new string[(2 * valuesSize)]; //Our new values array of double length
-	for (int i = 0; i < valuesSize; i++) {					//for every value
-		dblArray[i] = values[i];					//copy over values from old values to new values
-	}
-	valuesSize *= 2;										//double valuesSize
+	string *oldArray = values; //Our new values array of double length
+	int oldArraySize = valuesSize;
+	valuesSize *=2;
+	values = new string[valuesSize];
+	for (int i = 0; i < oldArraySize; i++) {					//for every value
+		values[i] = oldArray[i];					//copy over values from old values to new values
+	}									//double valuesSize
 }
 

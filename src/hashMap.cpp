@@ -14,7 +14,7 @@ hashMap::hashMap(bool hash1, bool coll1) {
 
 	first = "";
 	numKeys = 0;
-	mapSize = 7;
+	mapSize = 199;
 	//map = NULL;
 	map = new hashNode*[mapSize];
 	for (int i=0; i<mapSize; i++) {
