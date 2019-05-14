@@ -12,8 +12,11 @@ using namespace std;
 
 int main() {
 
-	hashMap *testMap = new hashMap(1, 1);
-	//int prime = testMap->getClosestPrime(2);
-	//cout << prime << endl;
+	hashMap *testMap = new hashMap(1, 0);
+	testMap->printMap();
+	int ind1 = testMap->calcHash("cad");
+	int ind2 = testMap->collHash2(0, 6, "don");
+	cout << ind1 << endl;
+	cout << ind2 << endl;
 	return 0;
 }

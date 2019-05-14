@@ -16,7 +16,7 @@ hashMap::hashMap(bool hash1, bool coll1) {
 	numKeys = NULL;
 	mapSize = 7;
 	*map = new hashNode[mapSize];
-	for (int i=0; i<7; i++) {
+	for (int i=0; i<13; i++) {
 		map[i] = NULL;
 	}
 	this->hash1 = hash1;
@@ -61,7 +61,13 @@ int hashMap::calcHash(string key) {
 	for (int i=0; i<len; i++) {
 		segment = ((segment * base + int(key[i])) % this->mapSize);
 	}
-	return segment;
+	if (map[segment] == NULL) {
+		return segment;
+	} else {
+
+		return segment;
+	}
+
 }
 
 /*	calcHash2
@@ -142,6 +148,7 @@ int hashMap::collHash1(int h, int index, string key) {
 	if (map[index] == NULL) {
 		return index;
 	} else {
+		collisionct2++;
 		if (index >= mapSize -1) {
 			index = -1;
 		}
@@ -153,7 +160,7 @@ int hashMap::collHash1(int h, int index, string key) {
  * This collision handling method uses quadratic probing and recursion to return the next index.
  * Parameters:
  * 		int h: represents the amount of times collHash2 was called. Used for Quadratic Calculation.
- * 				If using this method manually, this should be set to 0;
+ * 				If using this method manually, this should be set to 1;
  * 		int index: represents the current index being looked at. If being manually called by
  * 			the user, a value of the collision index plus 1 should be used.
  * 		string key: represents the keyword to be inserted.
@@ -164,6 +171,7 @@ int hashMap::collHash2(int h, int index, string key) {
 	if (map[index] == NULL) {
 		return index;
 	} else {
+		collisionct2++;
 		index += h * h;
 		while (index >= mapSize) {
 			index -= mapSize;
@@ -173,8 +181,35 @@ int hashMap::collHash2(int h, int index, string key) {
 }
 
 //finds the key in the array and returns its index.  If it's not in the array, returns -1
-//int hashMap::findKey(string key);
+int hashMap::findKey(string key) {
+	int index;
+	if (hash1) {
+		index = calcHash(key);
+	} else {
+		index = calcHash2(key);
+	}
+	if (map[index] == NULL) {
+		return -1;
+	} else if (map[index]->keyword == key) {
+		return index;
+	} else {
+
+	}
+}
 
 //I wrote this solely to check if everything was working.
-//void hashMap::printMap();
+void hashMap::printMap() {
+	for (int i=0; i<mapSize; i++) {
+		if (map[i] != NULL) {
+			cout << map[i]->keyword << ": ";
+			for (int j=0; j<map[i]->currSize; j++) {
+				cout << map[i]->values[j] << ", ";
+			}
+			cout << endl;
+		} else {
+			cout << "NULL" << endl;
+		}
+	}
+	return;
+}
 
