@@ -14,8 +14,8 @@ hashMap::hashMap(bool hash1, bool coll1) {
 
 	first = "";
 	numKeys = 0;
-	mapSize = 199;
-	//map = NULL;
+	mapSize = 10;
+
 	map = new hashNode*[mapSize];
 	for (int i=0; i<mapSize; i++) {
 		map[i] = NULL;
@@ -38,14 +38,14 @@ hashMap::hashMap(bool hash1, bool coll1) {
  * hashing and collision logic (hash1 vs hash2 and coll1 vs coll2) are handled by the getIndex() method.
  */
 void hashMap::addKeyValue(string key, string value) {
+	double load = (double(numKeys) +1.0) / mapSize;
+	if (load > 0.70) {
+		this->reHash();
+	}
 	int index = getIndex(key);
 	if (map[index] == NULL) {
 		map[index] = new hashNode(key, value);
 		numKeys++;
-		double load = (double(numKeys)) / mapSize;
-		if (load > 0.70) {
-			this->reHash();
-		}
 	} else {
 		map[index]->addValue(value);
 	}
@@ -59,11 +59,10 @@ int hashMap::getIndex(string key) {
 	} else {
 		index = calcHash2(key);
 	}
-	if (map[index] == NULL) {
-		return index;
-	} else if (map[index]->keyword == key) {
+	if (map[index] == NULL || map[index]->keyword == key) {
 		return index;
 	} else {
+		collisionct1++;
 		if (coll1) {
 			index = collHash1(1, index +1, key);
 		} else {
@@ -89,12 +88,7 @@ int hashMap::calcHash(string key) {
 	for (int i=0; i<len; i++) {
 		segment = ((segment * base + int(key[i])) % this->mapSize);
 	}
-	if (map[segment] == NULL) {
-		return segment;
-	} else {
-
-		return segment;
-	}
+	return segment;
 
 }
 
@@ -108,6 +102,7 @@ int hashMap::calcHash(string key) {
  * 		int segment: This is the index representing the key for the value.
  */
 int hashMap::calcHash2(string key) {
+
 	int base = 13;
 	int len = key.length();
 	int segment = 0;
@@ -171,10 +166,10 @@ int hashMap::collHash1(int h, int index, string key) {
 		return index;
 	} else {
 		h++;
-		collisionct2++;
 		if (index >= mapSize -1) {
 			index = -1;
 		}
+		collisionct2 += h +1;
 		return collHash1(h, index +1, key);
 	}
 }
@@ -194,11 +189,11 @@ int hashMap::collHash2(int h, int index, string key) {
 		return index;
 	} else {
 		h++;
-		collisionct2++;
 		index += h * h;
 		while (index >= mapSize) {
 			index -= mapSize;
 		}
+		collisionct2 += h +1;
 		return collHash2(h, index, key);
 	}
 }
@@ -236,7 +231,7 @@ void hashMap::printMap() {
 		if (map[i] != NULL) {
 			cout << "[" << i << "]" << map[i]->keyword << ": ";
 			for (int j=0; j<map[i]->currSize; j++) {
-				cout << map[i]->values[j] << ", ";
+				cout << map[i]->values[j] << " ";
 			}
 			cout << endl;
 		} else {

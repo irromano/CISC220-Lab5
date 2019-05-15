@@ -14,6 +14,7 @@
 #include <stdlib.h>
 #include <string>
 #include <time.h>
+using namespace std;
 
 class hashMap {
 	friend class makeSeuss;

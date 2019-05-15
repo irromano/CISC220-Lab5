@@ -47,7 +47,7 @@ void makeSeuss::writeFile() {
 	string value = ht->map[ht->getIndex(ht->first)]->getRandValue();
 	int ct = 0;
 	int len = 0;
-	while (ct < 500 &&  value != "") {
+	while (ct < 500 && value != "") {
 		key = value;
 		outfile << key << " ";
 		if (len == 11) {
@@ -58,6 +58,8 @@ void makeSeuss::writeFile() {
 		value = ht->map[ht->getIndex(key)]->getRandValue();
 		ct ++;
 	}
+	outfile << "\n" << "Number of Original Collisions:\t" << ht->collisionct1 << "\n";
+	outfile << "Number of Post Collisions:\t" << ht->collisionct2 << "\n";
 	outfile.close();
 	cout << endl;
 }

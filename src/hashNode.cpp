@@ -6,7 +6,10 @@
 // hashNode.cpp
 //============================================================================
 
-
+#include <iostream>
+#include <stdlib.h>
+#include <string>
+#include <time.h>
 #include "hashNode.hpp"
 
 
@@ -46,6 +49,11 @@ void hashNode::addValue(string value) {
 		values = new string[valuesSize];
 	}
 
+//	for (int i=0; i<valuesSize; i++) {
+//		if (values[i] == value)
+//			return;
+//	}
+
 	values[currSize] = value;
 	currSize++;
 
@@ -57,12 +65,11 @@ void hashNode::addValue(string value) {
 // returns a random string from the values array.  If there’s no values in the value array, then it returns an empty string.
 string hashNode::getRandValue() {
 
-	srand(time(NULL));
 	if (currSize == 0) {
 		return "";
 	} else {
-		srand(time(NULL));
-		return values[rand() % currSize];
+		int index = rand() % currSize;
+		return values[index];
 	}
 
 }
